@@ -21,7 +21,7 @@ också allting upp.
 
   Minsta möjliga html-fil som bara ger oss ett canvas att rita spelet på
 
-Resterande filer hör till de olika installerade modulerna vilka är som följer:
+#### Resterande filer hör till de olika installerade modulerna vilka är som följer:
 
 1. express
   Gör det väldigt enkelt att sätta upp servern, används bara i dom första raderna i server.js

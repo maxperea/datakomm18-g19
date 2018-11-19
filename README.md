@@ -6,7 +6,7 @@
 
 1. Se till att du har node installerat
 
-2. Kör 'node server.js'
+2. Kör 'node server.js' i foldern
 
 3. Öppna webläsare och gå in på 'localhost:5000'
 

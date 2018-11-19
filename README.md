@@ -4,20 +4,20 @@
 
 ### Intressanta och ointressanta filer
 
-1. server.js
+#### server.js
 
   Här hanteras servern, startas, visar vart saker finns osv, kör serverside delen av spelet.
 
-2. movement.js
+#### movement.js
 
   Hit är allt som hanterar själva mekanismerna kring hur man rör sig sov, collision, gravitation
 
-3. static/game.js
+#### static/game.js
 
   Client side delen av spelet, här tolkas keyboard input som skickas till servern, här ritas
 också allting upp.
 
-4. index.html
+#### index.html
 
   Minsta möjliga html-fil som bara ger oss ett canvas att rita spelet på
 

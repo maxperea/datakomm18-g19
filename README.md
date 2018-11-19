@@ -5,22 +5,22 @@
 ### Intressanta och ointressanta filer
 
 1. server.js
-Här hanteras servern, startas, visar vart saker finns osv, kör serverside delen av spelet.
+  Här hanteras servern, startas, visar vart saker finns osv, kör serverside delen av spelet.
 2. movement.js
-Hit är allt som hanterar själva mekanismerna kring hur man rör sig sov, collision, gravitation
+  Hit är allt som hanterar själva mekanismerna kring hur man rör sig sov, collision, gravitation
 3. static/game.js
-Client side delen av spelet, här tolkas keyboard input som skickas till servern, här ritas
+  Client side delen av spelet, här tolkas keyboard input som skickas till servern, här ritas
 också allting upp.
 4. index.html
-Minsta möjliga html-fil som bara ger oss ett canvas att rita spelet på
+  Minsta möjliga html-fil som bara ger oss ett canvas att rita spelet på
 
 Resterande filer hör till de olika installerade modulerna vilka är som följer:
 
 1. express
-Gör det väldigt enkelt att sätta upp servern, används bara i dom första raderna i server.js
+  Gör det väldigt enkelt att sätta upp servern, används bara i dom första raderna i server.js
 
 2. socket.io
-Denna modul är det som används för kommunikation mellan client och server. de funktioner som liknar
+  Denna modul är det som används för kommunikation mellan client och server. de funktioner som liknar
 socket.foo eller io.emit.bar hör hit.
 
 ### Kodkonvention

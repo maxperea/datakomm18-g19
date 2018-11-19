@@ -89,11 +89,9 @@ io.on('connection', socket => {
         }
     })
     // Takes keyboard data and applies movePlayer function, moving the player.
-    // FIX: right now the score is emitted here in lack of better way, needs to be changed
     socket.on('movement', data => {
         let player = players[socket.id] || {};
-        movement.movePlayer(player, data)
-        socket.emit('score', player.score)
+        movement.movePlayer(player, data, 5, bounds)
     })
     // Removes the player on disconnect
     socket.on('disconnect', function() {

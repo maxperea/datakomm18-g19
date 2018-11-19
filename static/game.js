@@ -79,9 +79,7 @@ socket.on('state', state => {
         context.rect(item.left, item.up, item.right - item.left, item.down - item.up)
         context.fill()
     }
-})
 
-// When new score is received, update score
-socket.on('score', score => {
-    document.getElementById('score').innerText = score;
+    let player = state.players[socket.id] || { score: 0 }
+    document.getElementById('score').innerText = player.score;
 })

@@ -49,14 +49,8 @@ socket.foo eller io.emit.bar hör hit.
 
 ## Att göra:
 
-- Fixa snyggare grafik
-- Fixa en snygg front i html/css
-- Fixa UI med funktioner:
-  - Ange namn
-  - Visa alla spelares poäng
-  - Starta/Starta om/Avsluta
-- Implementera ovanstående funktioner i spelet
-- Fixa hur clienten får poängen rapporterad
+
+
 - Fixa så att rader som inte syns längre försvinner från spelet
 - Powerups
 - Olika spelare har olika färger
@@ -65,3 +59,20 @@ rollback, samt att clienten då ritar sitt lokala state
 - Fler hål genereras
 - Börja spelet med hel maze
 - Komma på fler saker att göra
+
+
+## Flytta punkter till era namn:
+
+### Markus
+- Fixa en snygg front i html/css/js 
+- Fixa UI med funktioner: 
+  - Ange namn
+  - Visa alla spelares poäng
+  - Starta/Starta om/Avsluta
+
+### Max
+- Fixa hur clienten får poängen rapporterad
+
+### David
+
+### Mattias

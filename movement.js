@@ -2,17 +2,23 @@
 // It should be quite self-explanatary
 
 
+let gravity = 0.35
+let edispersion = 0.99
+let bounce = 0.6
+let acceleration = 0.3
+let jumpforce = 4
+let speedcap = 8
 
-exports.movePlayer = (player, movement, speedcap, bounds) => {
-    if (movement.left) moveLeft(player, speedcap)
+exports.movePlayer = (player, movement) => {
+    if (movement.left) moveLeft(player)
     if (movement.up) jump(player)
-    if (movement.right) moveRight(player, speedcap)
+    if (movement.right) moveRight(player)
 }
 
 exports.forces = (player) => {
-    player.yspeed *= 0.99 // Air resistance/general dispersion of energy
-    player.xspeed *= 0.99 // -..-
-    player.yspeed += 0.15 // gravitational force
+    player.yspeed *= edispersion // Air resistance/general dispersion of energy
+    player.xspeed *= edispersion // -..-
+    player.yspeed += gravity // gravitational force
     player.x += player.xspeed //movement derived from speed
     player.y += player.yspeed // -..-
 }
@@ -20,18 +26,18 @@ exports.forces = (player) => {
 exports.confine = (player, bounds) => {
     if (isBelow(player, bounds)) {
         player.y = bounds.down 
-        player.yspeed *= -0.5
+        player.yspeed *= -bounce
         player.onground = true
     } else if (isAbove(player, bounds)) {
         player.y = bounds.up
-        player.yspeed *= -0.5
+        player.yspeed *= -bounce
     } 
     if (isRightOf(player, bounds)) {
         player.x = bounds.right
-        player.xspeed *= -0.5
+        player.xspeed *= -bounce
     } else if (isLeftOf(player, bounds)) {
         player.x = bounds.left
-        player.xspeed *= -0.5
+        player.xspeed *= -bounce
     } 
 }
 
@@ -51,7 +57,7 @@ exports.collisionWThing = (player, bounds) => {
         !isBelow(player, bounds)) {
             if (player.x - player.radius < bounds.right) {
                 player.x = bounds.right + player.radius
-                player.xspeed *= -0.5
+                player.xspeed *= -bounce
             }
         }
     if(isAbove(player, bounds) &&
@@ -59,7 +65,7 @@ exports.collisionWThing = (player, bounds) => {
         !isRightOf(player, bounds)) {
             if (player.y + player.radius > bounds.up) {
                 player.y = bounds.up - player.radius
-                player.yspeed *= -0.5
+                player.yspeed *= -bounce
                 player.onground = true
             }
         }
@@ -68,7 +74,7 @@ exports.collisionWThing = (player, bounds) => {
         !isBelow(player, bounds)) {
             if (player.x + player.radius > bounds.left) {
                 player.x = bounds.left - player.radius
-                player.xspeed *= -0.5
+                player.xspeed *= -bounce
             }
         }
     if(isBelow(player, bounds) &&
@@ -76,7 +82,7 @@ exports.collisionWThing = (player, bounds) => {
         !isRightOf(player, bounds)) {
             if (player.y - player.radius < bounds.down) {
                 player.y = bounds.down + player.radius
-                player.yspeed *= -0.5
+                player.yspeed *= -bounce
             }
         }
    
@@ -94,15 +100,15 @@ let isRightOf = (player, bounds) => {
 let isLeftOf = (player, bounds) => {
     return player.x < bounds.left
 }
-let moveLeft = (player, speedcap) => {
-    if (player.yspeed > -speedcap) player.xspeed -= 0.1
+let moveLeft = (player) => {
+    if (player.yspeed > -speedcap) player.xspeed -= acceleration
 }
-let moveRight = (player, speedcap) => {
-    if (player.yspeed < speedcap) player.xspeed += 0.1
+let moveRight = (player) => {
+    if (player.yspeed < speedcap) player.xspeed += acceleration
 }
 let jump = (player) => {
     if(player.onground){
-        player.yspeed -= 4
+        player.yspeed -= jumpforce
     }
     player.onground = false
 

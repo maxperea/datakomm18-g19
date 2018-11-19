@@ -62,4 +62,6 @@ socket.foo eller io.emit.bar hör hit.
 - Olika spelare har olika färger
 - Implementera ett lokalt state som kan påverkas direkt och som sen måste godkännas av servern annars
 rollback, samt att clienten då ritar sitt lokala state
+- Fler hål genereras
+- Börja spelet med hel maze
 - Komma på fler saker att göra

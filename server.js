@@ -92,7 +92,7 @@ io.on('connection', socket => {
     // FIX: right now the score is emitted here in lack of better way, needs to be changed
     socket.on('movement', data => {
         let player = players[socket.id] || {};
-        movement.movePlayer(player, data, 5, bounds)
+        movement.movePlayer(player, data)
         socket.emit('score', player.score)
     })
     // Removes the player on disconnect

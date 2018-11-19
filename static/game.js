@@ -1,3 +1,11 @@
+// Constants Possibly move to separate file
+// The possible playerColors can add more without changing anything else.
+const playerColors = [
+    'yellow',
+    'green',
+    'red'
+]
+
 // Setup global variables, add io
 let socket = io()
 // The current state of intended movement
@@ -63,9 +71,9 @@ setInterval( ()=> {
 socket.on('state', state => {
     context.fillStyle = 'black'
     context.fillRect(0, 0, 800, 600)
-    context.fillStyle = 'yellow'
     for(let id in state.players) {
         let player = state.players[id]
+        context.fillStyle = playerColors[player.index%playerColors.length]
         if (!player.lost) {
             context.beginPath();
             context.arc(player.x, player.y, 10, 0, 2 * Math.PI)

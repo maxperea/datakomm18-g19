@@ -51,11 +51,9 @@ socket.foo eller io.emit.bar hör hit.
 
 
 
-- Fixa så att rader som inte syns längre försvinner från spelet
+
 - Powerups
-- Olika spelare har olika färger
-- Fler hål genereras
-- Börja spelet med hel maze
+
 - Komma på fler saker att göra
 
 
@@ -75,3 +73,7 @@ socket.foo eller io.emit.bar hör hit.
 - Implementera ett lokalt state som kan påverkas direkt och som sen måste godkännas av servern annars
 rollback, samt att clienten då ritar sitt lokala state
 ### Mattias
+- Olika spelare har olika färger
+- Fler hål genereras
+- Börja spelet med hel maze
+- Fixa så att rader som inte syns längre försvinner från spelet

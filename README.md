@@ -49,13 +49,9 @@ socket.foo eller io.emit.bar hör hit.
 
 ## Att göra:
 
-
-
-
 - Powerups
-
+- Förbättra collision
 - Komma på fler saker att göra
-
 
 ## Flytta punkter till era namn:
 
@@ -67,13 +63,18 @@ socket.foo eller io.emit.bar hör hit.
   - Starta/Starta om/Avsluta
 
 ### Max
-- Fixa hur clienten får poängen rapporterad
+- Uppdatera grafik
 
 ### David
 - Implementera ett lokalt state som kan påverkas direkt och som sen måste godkännas av servern annars
 rollback, samt att clienten då ritar sitt lokala state
+
 ### Mattias
+
+## Flytta färdiga punkter hit:
+
 - Olika spelare har olika färger
 - Fler hål genereras
 - Börja spelet med hel maze
 - Fixa så att rader som inte syns längre försvinner från spelet
+- Fixa hur clienten får poängen rapporterad

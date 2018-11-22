@@ -10,6 +10,7 @@ let server = http.Server(app)
 let io = socketIO(server)
 
 let port = 5000
+//changed refresh rate for testing purposes
 let refreshRate = 1000 / 60
 
 app.set('port', port)
@@ -85,14 +86,34 @@ io.on('connection', socket => {
             radius: 10,
             onground: false,
             score: 0,
-            lost: false
+            lost: false,
+            moving: null
         }
+        socket.emit('playerId', socket.id)
     })
     // Takes keyboard data and applies movePlayer function, moving the player.
     // FIX: right now the score is emitted here in lack of better way, needs to be changed
     socket.on('movement', data => {
         let player = players[socket.id] || {};
-        movement.movePlayer(player, data)
+        if(data != null){
+            player.moving = data
+        }
+        else{
+            console.log("this should not happen")
+        }
+        if(movement.canMove(player, data)){
+            movement.movePlayer(player, player.moving)
+        }
+        else{
+            player.moving = {
+                left: false,
+                up: false,
+                right: false,
+                down: false
+            }
+            
+            socket.emit('rollback', state)
+        }
         socket.emit('score', player.score)
     })
     // Removes the player on disconnect
@@ -108,6 +129,7 @@ setInterval(() => {
     // Applies forces, checks loss and confines the player, it also checks collision with items
     for (var i in players) {
         let player = players[i]
+        
         movement.checkLoss(player, bounds)
         movement.forces(player)
         movement.confine(player, bounds)

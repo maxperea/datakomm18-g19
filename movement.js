@@ -9,6 +9,11 @@ let acceleration = 0.3
 let jumpforce = 4
 let speedcap = 8
 
+
+//Should have ome check
+exports.canMove= (player, movement) => {
+    return true
+}
 exports.movePlayer = (player, movement) => {
     if (movement.left) moveLeft(player)
     if (movement.up) jump(player)

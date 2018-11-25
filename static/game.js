@@ -1,17 +1,29 @@
 
-
-// Setup global variables, add io
-let socket = io()
-// The current state of intended movement
 // Constants Possibly move to separate file
-
-
 // The possible playerColors can add more without changing anything else.
 const playerColors = [
     'yellow',
     'green',
     'red'
 ]
+
+
+// Setup global variables, add io
+let socket = io()
+
+let speed = -0.2
+
+
+let moving = {
+    left: false,
+    up: false,
+    right: false,
+    down: false
+}
+let positionUpdateRate= 1
+let counter = 1
+let id = null
+let tempState = null
 
 
 
@@ -139,19 +151,7 @@ let jump = (player) => {
 
 
 
-let speed = -0.2
 
-
-let moving = {
-    left: false,
-    up: false,
-    right: false,
-    down: false
-}
-let positionUpdateRate= 1
-let counter = 1
-let id = null
-let tempState = null
 // Get canvas from html document
 let canvas = document.getElementById('canvas')
 // Set params
@@ -230,7 +230,6 @@ let predictGameChange = () =>{
 let drawState = (state) => {
     context.fillStyle = 'black'
     context.fillRect(0, 0, 800, 600)
-    context.fillStyle = 'yellow'
     for(let id in state.players) {
         let player = state.players[id]
         context.fillStyle = playerColors[player.index%playerColors.length]
@@ -247,6 +246,7 @@ let drawState = (state) => {
         context.rect(item.left, item.up, item.right - item.left, item.down - item.up)
         context.fill()
     }
+
     let player = state.players[socket.id] || { score: 0 }
     document.getElementById('score').innerText = player.score;
 }
@@ -289,5 +289,3 @@ socket.on('playerId', playerId => {
 socket.on('score', score => {
     document.getElementById('score').innerText = score;
 })
-// This module contains the functinos controlling movement and forces of the game
-// It should be quite self-explanatary

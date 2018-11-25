@@ -20,7 +20,6 @@ let io = socketIO(server)
 let connectCounter = 0
 
 
-
 let port = 5000
 
 let refreshRate = 1000 / 60
@@ -99,7 +98,12 @@ let makeRow = (y, height) => {
         }
     }
 
+
 }
+
+newGame()
+
+
 let newGame = () => {
     makeRow(600, 50)
     makeRow(500, 50)
@@ -110,6 +114,7 @@ let newGame = () => {
 }
 
 newGame()
+
 
 
 // All the functions reacting on messages from clients
@@ -127,14 +132,15 @@ io.on('connection', socket => {
             score: 0,
             lost: false,
             moving: null,
+
             index: connectCounter
         }
         socket.emit('playerId', socket.id)
     })
     // Takes keyboard data and applies movePlayer function, moving the player.
-    // FIX: right now the score is emitted here in lack of better way, needs to be changed
     socket.on('movement', data => {
         let player = players[socket.id] || {};
+
         if(data != null){
             player.moving = data
         }
@@ -155,6 +161,7 @@ io.on('connection', socket => {
             socket.emit('rollback', state)
         }
         socket.emit('score', player.score)
+
     })
     // Removes the player on disconnect
     socket.on('disconnect', function() {

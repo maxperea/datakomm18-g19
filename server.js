@@ -101,8 +101,6 @@ let makeRow = (y, height) => {
 
 }
 
-newGame()
-
 
 let newGame = () => {
     makeRow(600, 50)

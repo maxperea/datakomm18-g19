@@ -26,7 +26,7 @@ let id = null
 let tempState = null
 
 
-
+//should import the movement module instead of this
 
 let gravity = 0.35
 let edispersion = 0.99
@@ -201,6 +201,8 @@ document.addEventListener('keyup', event => {
 let updateTempState = (state) =>{
    tempState= state
 }
+
+
 //bredicts how the clients will behave
 let predictGameChange = () =>{
     for (var i in tempState.players) {
@@ -272,15 +274,17 @@ setInterval( ()=> {
     
 }, 1000 / 60)
 
-// When a new state is received, draw it
+// When a new state is received, sync the local state with it
 socket.on('state', state => {
     updateTempState(state)
-    //drawState(state)
 })
 
+//reverts changes made to the local state
 socket.on('rollback', state => {
     tempState=state
 })
+
+//gets this client's id
 socket.on('playerId', playerId => {
     id = playerId
 })

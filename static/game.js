@@ -1,11 +1,17 @@
 
 
-//let movement = require('C:\Users\David\Documents\Datakom\datakomm18-g19\movement')
-//let movement = require('./movement')
-//import * as movement from './movement'
 // Setup global variables, add io
 let socket = io()
 // The current state of intended movement
+// Constants Possibly move to separate file
+
+
+// The possible playerColors can add more without changing anything else.
+const playerColors = [
+    'yellow',
+    'green',
+    'red'
+]
 
 
 
@@ -142,31 +148,10 @@ let moving = {
     right: false,
     down: false
 }
-//simple for testing
-let spd = 10
-let tempStatePosition= {
-    x:100,
-    y:100
-}
-
-let permStatePosition= {
-    x:100,
-    y:100
-}
 let positionUpdateRate= 1
 let counter = 1
 let id = null
 let tempState = null
-let permState = {}
-/*
-tempState.position = {
-    x:100,
-    y:100    
-}
-permState.position = {
-    x:100,
-    y:100
-}*/
 // Get canvas from html document
 let canvas = document.getElementById('canvas')
 // Set params
@@ -211,17 +196,17 @@ document.addEventListener('keyup', event => {
             break
     }
 })
-function updatePermState(state){
-    permState= state
-}
-function updateTempState(state){
+
+//used to sync the local state with the server state
+let updateTempState = (state) =>{
    tempState= state
 }
-function predictGameChange(){
+//bredicts how the clients will behave
+let predictGameChange = () =>{
     for (var i in tempState.players) {
         let player = tempState.players[i]
         
-        if(player.moving != null && canMove(player, player.moving)){ //not sure about the order of every movement realated action
+        if(player.moving != null && canMove(player, player.moving)){
             movePlayer(player, player.moving)
         }
         checkLoss(player, bounds)
@@ -239,31 +224,16 @@ function predictGameChange(){
     }
 
 }
-function updatePosition(moving){
-    //if(canMove){
-      //  movePlayer(player, moving)
-    //}
 
-    predictGameChange()
-    
-    //if(moving.left && moving.left + spd >9){
-     //   tempState.position.x -= spd
-    //}
-    /*
-    if(moving.right && moving.right + spd <791){
-        tempState.position.x += spd
-    }
-    if(moving.up && moving.up + spd >9){
-        tempState.position.y += spd
-  }*/
-    
-}
-function drawState(state){
+
+//creates the graphical represesntaion of the game
+let drawState = (state) => {
     context.fillStyle = 'black'
     context.fillRect(0, 0, 800, 600)
     context.fillStyle = 'yellow'
     for(let id in state.players) {
         let player = state.players[id]
+        context.fillStyle = playerColors[player.index%playerColors.length]
         if (!player.lost) {
             context.beginPath();
             context.arc(player.x, player.y, 10, 0, 2 * Math.PI)
@@ -277,7 +247,8 @@ function drawState(state){
         context.rect(item.left, item.up, item.right - item.left, item.down - item.up)
         context.fill()
     }
-    //updatePermState(state)
+    let player = state.players[socket.id] || { score: 0 }
+    document.getElementById('score').innerText = player.score;
 }
 // Sends information of movement every 1/60th second
 
@@ -285,12 +256,13 @@ setInterval( ()=> {
     counter++
     
     if(tempState != null){
+        
         if(counter % positionUpdateRate == 0){
             if(id != null){
                 tempState.players[id].moving = moving //instantly uppdates tempState
             }
         
-            updatePosition(moving)
+            predictGameChange() 
         }
         drawState(tempState)
         
@@ -302,7 +274,6 @@ setInterval( ()=> {
 
 // When a new state is received, draw it
 socket.on('state', state => {
-    //updatePermState(state)
     updateTempState(state)
     //drawState(state)
 })

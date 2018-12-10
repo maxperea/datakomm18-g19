@@ -1,0 +1,183 @@
+#container  {
+    width: 100%;
+    height: 1120px;  
+    overflow: hidden;
+    background: center no-repeat fixed url(../static/images/space.png);
+    background-size: cover;
+    position: relative;
+}
+
+#body {
+    margin:0 auto;
+    width: 1220px;
+    height: 820px;
+    overflow: visible;
+}
+
+#header	{
+    margin:0 auto;
+    width: 100%;
+    height: 100px;
+    background: black;
+}
+
+h1, h2 { 
+    margin: 0; 
+    font-family: 'Leckerli One', cursive;
+    text-shadow: 0 2px rgba(0,0,0,.5);
+    color: white;
+    font-size: 300%;
+  }
+
+#leftnav {
+    float: left;
+}       
+canvas {
+    margin:0 auto;
+    border: 10px solid purple;
+    width: 800px;
+    height: 600px;
+    background: black;
+}
+
+#rightnav  {
+    float: right;
+}
+
+#bottom {
+    margin-top: -4px;
+    width: 100%;
+    height: 100px;
+    background: black;
+
+}
+
+.nav_box {
+    width: 200px;
+    height: 620px;
+    background-color: black;
+}
+.text_color {
+    color: white;
+}
+
+.inner_border {
+    box-shadow: inset 0px 0px 0px 5px white;
+    box-sizing: border-box;
+}
+
+.body_center {
+position: absolute;
+top: 50%;
+left: 50%;
+transform: translate(-50%, -50%);
+}
+
+.text_center {
+    text-align: center;
+    vertical-align: middle;
+}
+
+#highscore_boxes{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    height: 300px;
+    width: 200px;
+}
+
+.name_and_score {
+    display: flex;
+    direction: row;
+    justify-content: flex-start;
+    height: 40px;
+    width: 180px;
+}
+
+.name_box {
+    height: 40px;
+    width: 120px;
+}
+
+.highscore_box {
+    height: 40px;
+    width: 60px;
+}
+
+#saved_data{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 600px;
+    width: 200px;
+}
+
+.saved_data_boxes{
+    display: flex;
+    flex-direction: column;
+    margin-top: 30px;
+    justify-content: flex-start;
+    height: 100%;
+    width: 200px;
+}
+
+.saved_data_box {
+    height: 40px;
+    width: 100%;
+}
+
+.top_bot_box{
+    display: flex;
+    justify-content: center;
+    height: 90%;
+    width: 100%;
+}
+
+.flex-item {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    color: black;
+    width: 200px;
+    height: 60px;
+    margin: auto;
+  }
+
+.score_box {
+    width: 180px;
+    height: 40px;
+    margin: auto;
+}
+
+input[type=text], select {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    text-align: center;
+    font-size: 100%;
+  }
+
+  .item_fullsize {
+    width: 100%;
+    height: 100%;
+    font-size: 100%;
+    margin-top: 0;
+  }
+
+  button:hover {
+    background: rgb(230, 224, 224)
+  }
+
+  .text_and_score {
+    display: flex;
+    direction: row;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    font-size: 100%;
+}

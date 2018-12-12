@@ -6,7 +6,6 @@ const holeSize = 50
 
 // Dependencies
 let movement = require('./movement')
-let testmod = require('./static/test')
 let express = require('express')
 let http = require('http')
 let path = require('path')

@@ -1,11 +1,4 @@
 
-/*requirejs(["./test"], function(test) {
-    //This function is called when scripts/helper/util.js is loaded.
-    //If util.js calls define(), then this function is not fired until
-    //util's dependencies have loaded, and the util argument will hold
-    //the module value for "helper/util".
-});
-let testmod = require('./test')*/
 // Constants Possibly move to separate file
 // The possible playerColors can add more without changing anything else.
 const playerColors = [
@@ -270,9 +263,6 @@ function saveName(){
 setInterval( ()=> {
     counter++
 
-    //if(testmod.bla()){
-      //  console.log("hello")
-    //}
     if(tempState != null){
         
         if(counter % positionUpdateRate == 0){
@@ -310,8 +300,6 @@ socket.on('score', score => {
     document.getElementById('score').innerText = score;
 })
 socket.on('highScore', highScore => {
-    console.log("test")
-    console.log(highScore)
     document.getElementById('name1').innerText = highScore.first.name
     document.getElementById('score1').innerText = highScore.first.score
     document.getElementById('name2').innerText = highScore.second.name

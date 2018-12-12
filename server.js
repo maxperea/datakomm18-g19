@@ -32,10 +32,6 @@ let highScores = {
 }
 let firstLoss = false;
 
-//let ExpressPeerServer = require('peer').ExpressPeerServer
-/*let options = {
-    debug: true
-}*/
 
 let port = 5000
 
@@ -60,8 +56,7 @@ app.get('/', (req, res) => {
 server.listen(port, () => {
     console.log(`Starting server on ${port}`)
 })
-/*let peerServer = ExpressPeerServer(server, options)
-app.use('/peerjs', peerServer)*/
+
 // Setup global variables
 // The object containing all player objects
 let players = {}
@@ -146,7 +141,7 @@ let updateHighScore = (newScore, id, name) => {
             return
         } 
     }
-    console.log(temp)
+    
     if(temp.score > highScores.first.score){
         old = highScores.first
         highScores.first = temp
@@ -162,7 +157,7 @@ let updateHighScore = (newScore, id, name) => {
       
     }
 
-    console.log(temp)
+    
     if(temp.score > highScores.second.score  && highScores.first.id != temp.id){
         old = highScores.second
         highScores.second = temp
@@ -173,15 +168,13 @@ let updateHighScore = (newScore, id, name) => {
         }
     }
 
-    console.log(temp)
+    
     if(temp.score > highScores.third.score  && highScores.first.id != temp.id && highScores.second.id != temp.id){
         old = highScores.third
         highScores.third = temp
         temp = old
     }
-    console.log(highScores)
-    console.log(temp)
-    
+        
 }
 
 
@@ -202,14 +195,6 @@ let newGame = () => {
 }
 
 newGame()
-/*
-peerServer.on('connection', id => {
-    console.log(id)
-})
-
-peerServer.on('disconnect', id => {
-    console.log(id)
-})*/
 
 // All the functions reacting on messages from clients
 io.on('connection', socket => {
@@ -246,7 +231,7 @@ io.on('connection', socket => {
             
         }
         else{
-            console.log("this should not happen")
+            console.log("no movement data recieved")
         }
         if(movement.canMove(player, data)){
             movement.movePlayer(player, player.moving)
@@ -268,7 +253,6 @@ io.on('connection', socket => {
     socket.on('disconnect', function() {
         console.log("Id :" + socket.id + " disconnected")
         kill(players[socket.id])
-        //io.sockets.emit('highScore', highScores)
     });
 })
 
@@ -320,6 +304,6 @@ setInterval(() => {
         // State is emitted
         io.sockets.emit('state', state)
     }
-    io.sockets.emit('highScore', highScores)
+    io.sockets.emit('highScore', highScores) // this is not the most efficient but cba
     
 }, refreshRate)

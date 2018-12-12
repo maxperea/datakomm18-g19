@@ -4,7 +4,6 @@ const maxNoHoles = 5
 const holeSize = 50
 
 
-
 // Dependencies
 let movement = require('./movement')
 let express = require('express')
@@ -12,15 +11,39 @@ let http = require('http')
 let path = require('path')
 let socketIO = require('socket.io')
 
+
+
+
 let app = express()
 let server = http.Server(app)
 let io = socketIO(server)
 let connectCounter = 0
+let highScores = {
+    first:{score: 0,
+           id: "",
+           name: ""},
+    second:{score: 0,
+            id: "",
+            name: ""},
+    third:{score: 0,
+           id: "",
+           name: ""}
+}
+let firstLoss = false;
 
-let port = 5000
+
+let port = 80
+
 let refreshRate = 1000 / 60
 
+//used to show local state works
+let sendRate = 1
+let SCounter = 0
 app.set('port', port)
+
+
+
+
 app.use('/static', express.static(__dirname + '/static'))
 
 // Routing
@@ -91,6 +114,66 @@ let makeRow = (y, height) => {
         }
     }
 
+
+}
+let mapNameToId = (id, name)=> {
+    if(first.id == id){
+        first.name = name
+    }
+    if(second.id == id){
+        second.name = name
+    }
+    if(third.id == id){
+        third.name = name
+    }
+}
+let updateHighScore = (newScore, id, name) => {
+    temp = {
+        score: newScore,
+        id: id,
+        name: name
+    }
+    old = null
+    oldId = null
+    for(i = 0; i< 100; i++){
+        if (i == id){
+            return
+        } 
+    }
+    
+    if(temp.score > highScores.first.score){
+        old = highScores.first
+        highScores.first = temp
+        temp = old
+        if(highScores.second.id == highScores.first.id){
+            highScores.second = temp
+        }
+        
+        if(highScores.third.id == highScores.first.id){
+            highScores.third = temp
+            
+        }
+      
+    }
+
+    
+    if(temp.score > highScores.second.score  && highScores.first.id != temp.id){
+        old = highScores.second
+        highScores.second = temp
+        temp = old
+        
+        if(highScores.second.id == highScores.third.id){
+            highScores.third = temp
+        }
+    }
+
+    
+    if(temp.score > highScores.third.score  && highScores.first.id != temp.id && highScores.second.id != temp.id){
+        old = highScores.third
+        highScores.third = temp
+        temp = old
+    }
+        
 }
 
 
@@ -106,8 +189,6 @@ let newGame = () => {
 
 newGame()
 
-
-
 // All the functions reacting on messages from clients
 io.on('connection', socket => {
     connectCounter++
@@ -121,17 +202,53 @@ io.on('connection', socket => {
             radius: 10,
             onground: false,
             score: 0,
+            name: "",
             lost: false,
+            moving: null,
+
             index: connectCounter
         }
+        socket.emit('playerId', socket.id)
+        socket.emit('highScore', highScores)
+    })
+    socket.on('saveName', name => {
+        let player = players[socket.id] || {};
+        player.name = name
     })
     // Takes keyboard data and applies movePlayer function, moving the player.
     socket.on('movement', data => {
         let player = players[socket.id] || {};
-        movement.movePlayer(player, data, 5, bounds)
+
+        if(data != null){
+            player.moving = data
+            
+        }
+        else{
+            console.log("no movement data recieved")
+        }
+        if(movement.canMove(player, data)){
+            movement.movePlayer(player, player.moving)
+        }
+        else{
+            player.moving = {
+                left: false,
+                up: false,
+                right: false,
+                down: false
+            }
+            
+            socket.emit('rollback', state)
+        }
+        socket.emit('score', player.score)
+
     })
     // Removes the player on disconnect
     socket.on('disconnect', function() {
+        console.log("Id :" + socket.id + " disconnected")
+        player = players[socket.id]
+        if(player != null){
+          updateHighScore(player.score, player.index, player.name)
+        }
         delete players[socket.id]
     });
 })
@@ -143,6 +260,7 @@ setInterval(() => {
     // Applies forces, checks loss and confines the player, it also checks collision with items
     for (var i in players) {
         let player = players[i]
+        
         movement.checkLoss(player, bounds)
         movement.forces(player)
         movement.confine(player, bounds)
@@ -168,10 +286,21 @@ setInterval(() => {
             let player = players[id]
             if(!player.lost) {
                 player.score -= 100 * speed
+                
+                updateHighScore(player.score, id, player.name)
+                
+            }
+            else{
+                io.sockets.emit('highScore', highScores)
             }
         }
     }
-
-    // State is emitted
-    io.sockets.emit('state', state)
+    //used to be able to see difference between local and persistant state
+    SCounter++
+    if(SCounter % sendRate == 0){
+        // State is emitted
+        io.sockets.emit('state', state)
+    }
+    io.sockets.emit('highScore', highScores) // this is not the most efficient but cba
+    
 }, refreshRate)

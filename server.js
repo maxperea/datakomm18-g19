@@ -6,6 +6,7 @@ const holeSize = 50
 
 // Dependencies
 let movement = require('./movement')
+let testmod = require('./static/test')
 let express = require('express')
 let http = require('http')
 let path = require('path')
@@ -18,7 +19,23 @@ let app = express()
 let server = http.Server(app)
 let io = socketIO(server)
 let connectCounter = 0
+let highScores = {
+    first:{score: 0,
+           id: "",
+           name: ""},
+    second:{score: 0,
+            id: "",
+            name: ""},
+    third:{score: 0,
+           id: "",
+           name: ""}
+}
+let firstLoss = false;
 
+//let ExpressPeerServer = require('peer').ExpressPeerServer
+/*let options = {
+    debug: true
+}*/
 
 let port = 5000
 
@@ -28,6 +45,10 @@ let refreshRate = 1000 / 60
 let sendRate = 60
 let SCounter = 0
 app.set('port', port)
+
+
+
+
 app.use('/static', express.static(__dirname + '/static'))
 
 // Routing
@@ -39,7 +60,8 @@ app.get('/', (req, res) => {
 server.listen(port, () => {
     console.log(`Starting server on ${port}`)
 })
-
+/*let peerServer = ExpressPeerServer(server, options)
+app.use('/peerjs', peerServer)*/
 // Setup global variables
 // The object containing all player objects
 let players = {}
@@ -100,7 +122,75 @@ let makeRow = (y, height) => {
 
 
 }
+let mapNameToId = (id, name)=> {
+    if(first.id == id){
+        first.name = name
+    }
+    if(second.id == id){
+        second.name = name
+    }
+    if(third.id == id){
+        third.name = name
+    }
+}
+let updateHighScore = (newScore, id, name) => {
+    temp = {
+        score: newScore,
+        id: id,
+        name: name
+    }
+    old = null
+    oldId = null
+    for(i = 0; i< 100; i++){
+        if (i == id){
+            return
+        } 
+    }
+    console.log(temp)
+    if(temp.score > highScores.first.score){
+        old = highScores.first
+        highScores.first = temp
+        temp = old
+        if(highScores.second.id == highScores.first.id){
+            highScores.second = temp
+        }
+        
+        if(highScores.third.id == highScores.first.id){
+            highScores.third = temp
+            
+        }
+      
+    }
 
+    console.log(temp)
+    if(temp.score > highScores.second.score  && highScores.first.id != temp.id){
+        old = highScores.second
+        highScores.second = temp
+        temp = old
+        
+        if(highScores.second.id == highScores.third.id){
+            highScores.third = temp
+        }
+    }
+
+    console.log(temp)
+    if(temp.score > highScores.third.score  && highScores.first.id != temp.id && highScores.second.id != temp.id){
+        old = highScores.third
+        highScores.third = temp
+        temp = old
+    }
+    console.log(highScores)
+    console.log(temp)
+    
+}
+
+
+let kill = (player) => {
+    if(player != null){
+        updateHighScore(player.score, player.index, player.name)
+        delete player
+    }
+}
 
 let newGame = () => {
     makeRow(600, 50)
@@ -112,8 +202,14 @@ let newGame = () => {
 }
 
 newGame()
+/*
+peerServer.on('connection', id => {
+    console.log(id)
+})
 
-
+peerServer.on('disconnect', id => {
+    console.log(id)
+})*/
 
 // All the functions reacting on messages from clients
 io.on('connection', socket => {
@@ -128,12 +224,18 @@ io.on('connection', socket => {
             radius: 10,
             onground: false,
             score: 0,
+            name: "",
             lost: false,
             moving: null,
 
             index: connectCounter
         }
         socket.emit('playerId', socket.id)
+        socket.emit('highScore', highScores)
+    })
+    socket.on('saveName', name => {
+        let player = players[socket.id] || {};
+        player.name = name
     })
     // Takes keyboard data and applies movePlayer function, moving the player.
     socket.on('movement', data => {
@@ -141,6 +243,7 @@ io.on('connection', socket => {
 
         if(data != null){
             player.moving = data
+            
         }
         else{
             console.log("this should not happen")
@@ -163,7 +266,9 @@ io.on('connection', socket => {
     })
     // Removes the player on disconnect
     socket.on('disconnect', function() {
-        delete players[socket.id]
+        console.log("Id :" + socket.id + " disconnected")
+        kill(players[socket.id])
+        //io.sockets.emit('highScore', highScores)
     });
 })
 
@@ -200,6 +305,12 @@ setInterval(() => {
             let player = players[id]
             if(!player.lost) {
                 player.score -= 100 * speed
+                
+                updateHighScore(player.score, id, player.name)
+                
+            }
+            else{
+                io.sockets.emit('highScore', highScores)
             }
         }
     }
@@ -209,5 +320,6 @@ setInterval(() => {
         // State is emitted
         io.sockets.emit('state', state)
     }
+    io.sockets.emit('highScore', highScores)
     
 }, refreshRate)

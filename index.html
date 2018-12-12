@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!--<!DOCTYPE html>
 <html>
 <head>
     <title>Spel grupp 19</title>
@@ -9,10 +9,100 @@
         }
     </style>
     <script src="/socket.io/socket.io.js"></script>
+    
 </head>
 <body>
     <canvas id="canvas"></canvas>
     <div id="score"></div>
+</body>
+<script data-main="/static/game" src="static/require.js"></script>
+<script src="/static/game.js"></script>
+</html>-->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>datakommG19</title>
+    <link rel="stylesheet" href="/static/main.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+    <section id="container" class="bg">
+        <div id="body" class="text_color body_center">
+            <div id="header" class="inner_border text_center">
+                <h1>An a-MAZE-ing game!</h1>
+            </div>     
+            
+            <div id="leftnav" class="inner_border text_center nav_box">
+                <div id="saved_data">
+                    <div class="saved_data_boxes">
+                        <div class="saved_data_box" class="item_fullsize">SAVED DATA</div>
+                        <div class="saved_data_box" class="item_fullsize">Your name:</div>
+                        <div class="saved_data_box"><p id="saved_name" class="item_fullsize"></p></div>
+                        <div class="saved_data_box" class="item_fullsize">Your score:</div>
+                        <div class="saved_data_box"><p id="saved_score" class="item_fullsize"></p></div>
+                        
+                    </div>
+                </div>
+            </div>
+            
+            <div id="rightnav" class="inner_border text_center nav_box">
+                <div id="highscore_boxes"> 
+
+                    <p>Highscore (Top 3):</p>
+
+                    <div class="name_and_score">
+                            <div class="name_box">Players:</div>
+                            <div class="highscore_box">Scores:</div>
+                    </div>
+    
+
+                    <div class="name_and_score">
+                        <div id="name1" class="name_box">Name1</div>
+                        <div id="score1"class="highscore_box">score1</div>
+                    </div>
+
+                    <div class="name_and_score">
+                            <div id="name2" class="name_box">Name2</div>
+                            <div id="score2" class="highscore_box">score2</div>
+                    </div>
+
+                    <div class="name_and_score">
+                            <div id="name3" class="name_box">Name3</div>
+                            <div id="score3" class="highscore_box">score3</div>
+                    </div>
+                </div>
+           </div>
+
+            <canvas id="canvas" ></canvas>
+            
+            <div id="bottom" class="inner_border text_center">
+                    <div class="top_bot_box">
+                            <div class="flex-item">
+                                <input type="text" id="name" value="" placeholder="Enter your username" maxlength="8">
+                            </div>
+                            <div class="flex-item"><button onclick="saveName()" class="item_fullsize">Save name and score</button></div>
+                            <div class="flex-item">
+                                <div class="text_and_score">
+                                    <p>Current score: <div id="score"></div></p>
+                                </div>
+                                
+                                
+                            </div>
+                        </div>
+            </div>
+        </div>
+    </section>
+
+<script>
+    function myFunction() {
+        var x = document.getElementById("name").value;
+        var y = document.getElementById("score").innerText;
+        document.getElementById("saved_name").innerHTML = x;
+        document.getElementById("saved_score").innerHTML = y;
+    }
+</script>
+
 </body>
 <script src="/static/game.js"></script>
 </html>

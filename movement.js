@@ -10,7 +10,7 @@ let jumpforce = 4
 let speedcap = 8
 
 
-//Should have ome check
+//Should have some check
 exports.canMove= (player, movement) => {
     return true
 }

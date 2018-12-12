@@ -32,12 +32,12 @@ let highScores = {
 let firstLoss = false;
 
 
-let port = 5000
+let port = 80
 
 let refreshRate = 1000 / 60
 
 //used to show local state works
-let sendRate = 60
+let sendRate = 1
 let SCounter = 0
 app.set('port', port)
 
@@ -177,12 +177,6 @@ let updateHighScore = (newScore, id, name) => {
 }
 
 
-let kill = (player) => {
-    if(player != null){
-        updateHighScore(player.score, player.index, player.name)
-        delete player
-    }
-}
 
 let newGame = () => {
     makeRow(600, 50)
@@ -251,7 +245,11 @@ io.on('connection', socket => {
     // Removes the player on disconnect
     socket.on('disconnect', function() {
         console.log("Id :" + socket.id + " disconnected")
-        kill(players[socket.id])
+        player = players[socket.id]
+        if(player != null){
+          updateHighScore(player.score, player.index, player.name)
+        }
+        delete players[socket.id]
     });
 })
 

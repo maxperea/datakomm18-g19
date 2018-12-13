@@ -11,7 +11,7 @@ const playerColors = [
 // Setup global variables, add io
 let socket = io()
 
-let speed = -0.2
+let speed = -0.3
 
 
 let moving = {

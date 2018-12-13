@@ -79,7 +79,7 @@ let state = {
 
 // Variables used by later functions, speed: movement of the world, trigger: accumulates speed to
 // trigger the addition of a new row, counter: counts up by makeRow() to identify the different rows
-let speed = -0.2
+let speed = -0.3
 let trigger = 0
 let counter = 0
 
